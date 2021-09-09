@@ -24,12 +24,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class Canvas extends JPanel implements MouseMotionListener, MouseListener 
+public class Canvas extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	static JLabel label = new JLabel();
 	static ArrayList<Point> points = new ArrayList<Point>();
 	static ArrayList<Template> templates = new ArrayList<Template>(); 
+	
 	public static void main(String arg[]) 
 	{	
 		javax.swing.SwingUtilities.invokeLater(new Runnable() 
@@ -73,10 +74,10 @@ public class Canvas extends JPanel implements MouseMotionListener, MouseListener
 						String n = JOptionPane.showInputDialog("Enter Template Name");
 						ArrayList<Point> newPoints = DollarMethods.Resample(Tpoints,64);
 						double iangle = DollarMethods.IndicativeAngle(newPoints);
-						newPoints = DollarMethods.RotateBy(newPoints,iangle);
+						newPoints = DollarMethods.RotateBy(newPoints, iangle);
 						newPoints = DollarMethods.ScaleTo(newPoints, 250);
 						newPoints = DollarMethods.TranslateTo(newPoints, new Point(0,0));
-						templates.add(new Template(n,newPoints));
+						templates.add(new Template(n, newPoints));
 					}
 					catch(Exception ex)
 					{
@@ -97,14 +98,14 @@ public class Canvas extends JPanel implements MouseMotionListener, MouseListener
 					String n = JOptionPane.showInputDialog("Enter Template Name");
 					ArrayList<Point> newPoints = DollarMethods.Resample(points,64);
 					double iangle = DollarMethods.IndicativeAngle(newPoints);
-					newPoints = DollarMethods.RotateBy(newPoints,iangle);
+					newPoints = DollarMethods.RotateBy(newPoints, iangle);
 					newPoints = DollarMethods.ScaleTo(newPoints, 250);
 					newPoints = DollarMethods.TranslateTo(newPoints, new Point(0,0));
-					templates.add(new Template(n,newPoints));
+					templates.add(new Template(n, newPoints));
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(frame,"No points were drawn");
+					JOptionPane.showMessageDialog(frame, "No points were drawn");
 				}
 			}		
 		});
@@ -117,13 +118,13 @@ public class Canvas extends JPanel implements MouseMotionListener, MouseListener
 			{
 				if(!templates.isEmpty())
 				{
-					ArrayList<Point> newPoints = DollarMethods.Resample(points,64);
+					ArrayList<Point> newPoints = DollarMethods.Resample(points, 64);
 					double iangle = DollarMethods.IndicativeAngle(newPoints);
-					newPoints = DollarMethods.RotateBy(newPoints,iangle);
+					newPoints = DollarMethods.RotateBy(newPoints, iangle);
 					newPoints = DollarMethods.ScaleTo(newPoints, 250);
 					newPoints = DollarMethods.TranslateTo(newPoints, new Point(0,0));
 					Result results = DollarMethods.Recognize(newPoints, templates);
-					label.setText(results.getTemplate().getName()+" "+results.score);
+					label.setText(results.getTemplate().getName() + " " + results.getScore());
 				}
 				else
 				{
@@ -133,7 +134,7 @@ public class Canvas extends JPanel implements MouseMotionListener, MouseListener
 		});
 		
 		JPanel buttons = new JPanel();
-		buttons.setLayout(new GridLayout(1,3));
+		buttons.setLayout(new GridLayout(1, 3));
 		buttons.add(load);
 		buttons.add(add);
 		buttons.add(rec);
@@ -150,26 +151,50 @@ public class Canvas extends JPanel implements MouseMotionListener, MouseListener
 	{		
 		setBackground(Color.WHITE);
 		setSize(480, 480);
-		label.addMouseListener(this);
-		addMouseListener(this);
-		addMouseMotionListener(this);
-	}
-	
-	@Override
-	public void mousePressed(MouseEvent e)
-	{
-		points = new ArrayList<Point>();
-		Point point = new Point(e.getX(),e.getY());
-		points.add(point);
-		repaint();
-	}
-	
-	@Override
-	public void mouseDragged(MouseEvent e) 
-	{
-		Point point = new Point(e.getX(),e.getY());
-		points.add(point);
-		repaint();
+		
+		MouseListener mouseListener = new MouseListener() 
+		{
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{
+				points = new ArrayList<Point>();
+				Point point = new Point(e.getX(), e.getY());
+				points.add(point);
+				repaint();
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			
+		};
+		
+		MouseMotionListener mouseMotionListener = new MouseMotionListener() 
+		{
+			@Override
+			public void mouseDragged(MouseEvent e)
+			{
+				Point point = new Point(e.getX(), e.getY());
+				points.add(point);
+				repaint();
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {}
+			
+		};
+		
+		label.addMouseListener(mouseListener);
+		addMouseListener(mouseListener);
+		addMouseMotionListener(mouseMotionListener);
 	}
 	
 	@Override
@@ -181,7 +206,7 @@ public class Canvas extends JPanel implements MouseMotionListener, MouseListener
 		{
 			for (Point point:points)
 			{
-				g.fillOval((int)point.x, (int)point.y, 4, 4);
+				g.fillOval((int)point.getX(), (int)point.getY(), 4, 4);
 			}
 		}
 	}
@@ -471,16 +496,4 @@ public class Canvas extends JPanel implements MouseMotionListener, MouseListener
 		newPoints = DollarMethods.TranslateTo(newPoints, new Point(0,0));
 		templates.add(new Template(name,newPoints));
 	}
-	@Override
-	public void mouseMoved(MouseEvent e) {}
-	@Override
-	public void mouseClicked(MouseEvent e) {}
-	@Override
-	public void mouseReleased(MouseEvent e) {}
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-	@Override
-	public void mouseExited(MouseEvent e) {}
-	
-
 }
