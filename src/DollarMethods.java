@@ -1,12 +1,9 @@
-import java.util.*;
+
 import java.lang.Math;
+import java.util.ArrayList;
 
 public class DollarMethods 
 {
-	public DollarMethods()
-	{
-		
-	}
 	public static ArrayList<Point> Resample(ArrayList<Point> points,double n)
 	{
 		double I = Pathlength(points)/(n-1);
@@ -36,6 +33,7 @@ public class DollarMethods
 		}
 		return newPoints;		
 	}
+	
 	public static double Pathlength(ArrayList<Point> points)
 	{
 		double distance = 0;
@@ -45,12 +43,14 @@ public class DollarMethods
 		}
 		return distance;
 	}
+	
 	public static double Distance(Point a, Point b)
 	{
 		double x = b.x - a.x;
 		double y = b.y - a.y;
 		return Math.sqrt(x*x+y*y);
 	}
+	
 	public static Point Centroid(ArrayList<Point> points)
 	{
 		double xsum = 0;
@@ -62,11 +62,13 @@ public class DollarMethods
 		}
 		return new Point(xsum/points.size(),ysum/points.size());
 	}
+	
 	public static double IndicativeAngle(ArrayList<Point> points)
 	{
 		Point c = Centroid(points);
 		return Math.atan2(c.y-points.get(0).y,c.x-points.get(0).x);
 	}
+	
 	public static ArrayList<Point> RotateBy(ArrayList<Point> points, double angle)
 	{
 		ArrayList<Point> newPoints = new ArrayList<Point>();
@@ -80,6 +82,7 @@ public class DollarMethods
 		}
 		return newPoints ;
 	}
+	
 	public static double[] BBox(ArrayList<Point> points)
 	{
 		double minX = Double.MAX_VALUE;
@@ -100,6 +103,7 @@ public class DollarMethods
 		double bbox[] = {maxX,minX,maxY,minY};
 		return bbox;
 	}
+	
 	public static ArrayList<Point> ScaleTo(ArrayList<Point> points, double s)
 	{
 		double B[] = BBox(points);
@@ -113,6 +117,7 @@ public class DollarMethods
 		}
 		return newPoints;
 	}
+	
 	public static ArrayList<Point> TranslateTo(ArrayList<Point> points, Point k)
 	{
 		ArrayList<Point> newPoints = new ArrayList<Point>();
@@ -126,6 +131,7 @@ public class DollarMethods
 		}
 		return newPoints ;
 	}
+	
 	public static double PathDistance(ArrayList<Point> A, ArrayList<Point> B)
 	{
 		double distance = 0;
@@ -135,6 +141,7 @@ public class DollarMethods
 		}
 		return distance/A.size();
 	}
+	
 	public static double DistanceAtAngle(ArrayList<Point> points,ArrayList<Point> T, double theta)
 	{
 		double distance = 0;
@@ -142,6 +149,7 @@ public class DollarMethods
 		distance = PathDistance(newPoints,T);
 		return distance;
 	}
+	
 	public static double DistanceAtBestAngle(ArrayList<Point> points,ArrayList<Point> T, double thetaa, double thetab, double thetat)
 	{
 		double phi = (0.5)*(-1+Math.sqrt(5));
@@ -170,6 +178,7 @@ public class DollarMethods
 		}
 		return Math.min(f1, f2);
 	}
+	
 	public static Result Recognize(ArrayList<Point> points,ArrayList<Template> templates)
 	{
 		double b = Double.MAX_VALUE;

@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 public class Template 
 {
-	String name;
-	ArrayList<Point> points;
+	private String name;
+	private ArrayList<Point> points;
 	public Template(String n, ArrayList<Point> p)
 	{
 		name = n;

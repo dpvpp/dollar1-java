@@ -1,19 +1,32 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.io.*;
-import javax.xml.parsers.*;
-import org.w3c.dom.*;
 
-public class execute extends JPanel implements MouseMotionListener, MouseListener 
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+public class Canvas extends JPanel implements MouseMotionListener, MouseListener 
 {
-	private static final long serialVersionUID = 1265968773346956449L;
+	private static final long serialVersionUID = 1L;
 	static JLabel label = new JLabel();
 	static ArrayList<Point> points = new ArrayList<Point>();
 	static ArrayList<Template> templates = new ArrayList<Template>(); 
@@ -27,6 +40,7 @@ public class execute extends JPanel implements MouseMotionListener, MouseListene
             }
         });
 	}
+	
 	public static void createAndShowGUI()
 	{
 		LoadDefault();
@@ -71,6 +85,7 @@ public class execute extends JPanel implements MouseMotionListener, MouseListene
 				}
 			}		
 		});
+		
 		JButton add = new JButton("Add Template");
 		add.addActionListener(new ActionListener()
 		{
@@ -93,6 +108,7 @@ public class execute extends JPanel implements MouseMotionListener, MouseListene
 				}
 			}		
 		});
+		
 		JButton rec = new JButton("Recognize");
 		rec.addActionListener(new ActionListener()
 		{
@@ -115,6 +131,7 @@ public class execute extends JPanel implements MouseMotionListener, MouseListene
 				}
 			}		
 		});
+		
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout(1,3));
 		buttons.add(load);
@@ -123,12 +140,13 @@ public class execute extends JPanel implements MouseMotionListener, MouseListene
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setSize(500, 500);
-		frame.add(new execute(),BorderLayout.CENTER);
+		frame.add(new Canvas(),BorderLayout.CENTER);
 		frame.add(label,BorderLayout.NORTH);
 		frame.add(buttons,BorderLayout.SOUTH);
 		frame.setVisible(true);
 	}
-	public execute()
+	
+	public Canvas()
 	{		
 		setBackground(Color.WHITE);
 		setSize(480, 480);
@@ -136,6 +154,7 @@ public class execute extends JPanel implements MouseMotionListener, MouseListene
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
+	
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
@@ -144,6 +163,7 @@ public class execute extends JPanel implements MouseMotionListener, MouseListene
 		points.add(point);
 		repaint();
 	}
+	
 	@Override
 	public void mouseDragged(MouseEvent e) 
 	{
@@ -151,6 +171,7 @@ public class execute extends JPanel implements MouseMotionListener, MouseListene
 		points.add(point);
 		repaint();
 	}
+	
 	@Override
 	public void paintComponent(Graphics g)
 	{
@@ -164,6 +185,8 @@ public class execute extends JPanel implements MouseMotionListener, MouseListene
 			}
 		}
 	}
+	
+	//Default templates
 	public static void LoadDefault()//uses same points as javascript code
 	{
 		String name = "Triangle";
